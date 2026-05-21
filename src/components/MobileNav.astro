@@ -1,0 +1,58 @@
+---
+import { linkedIn } from "../data/redesSociales.js";
+---
+
+<nav class="mobile-nav">
+  <a href="#" class="mobile-nav-item">
+    <span class="material-symbols-outlined home-icon">home</span>
+  </a>
+  <span class="mobile-nav-item">
+    <span class="material-symbols-outlined">search</span>
+  </span>
+  <span class="mobile-nav-item">
+    <span class="material-symbols-outlined">notifications</span>
+  </span>
+  <a href={linkedIn} target="_blank" class="mobile-nav-item">
+    <span class="material-symbols-outlined">mail</span>
+  </a>
+</nav>
+
+<style>
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background-color: rgba(19, 19, 19, 0.95);
+    backdrop-filter: blur(4px);
+    border-top: 1px solid var(--color-outline-variant);
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 50;
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-nav {
+      display: none;
+    }
+  }
+
+  .mobile-nav-item {
+    color: var(--color-on-surface-variant);
+    padding: 8px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-nav-item:hover {
+    color: var(--color-primary);
+  }
+
+  .home-icon {
+    color: var(--color-primary);
+    font-variation-settings: "FILL" 1;
+  }
+</style>

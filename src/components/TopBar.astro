@@ -1,0 +1,116 @@
+---
+import { github } from "../data/redesSociales.js";
+import githubIcon from "../assets/iconos/github.svg";
+---
+
+<header class="topbar">
+  <div class="container-topbar">
+    <div class="topbar-left">
+      <span class="logo-text font-headline-md">Portafolio</span>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input
+          class="search-input font-body-sm"
+          placeholder="Search projects..."
+          type="text"
+        />
+      </div>
+      <div class="topbar-icons">
+        <a
+          href={github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="icon-link"
+        >
+          <img src={githubIcon.src} alt="github icon" />
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    padding: 0 var(--spacing-gutter);
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--color-surface);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  .container-topbar {
+    width: 100%;
+    margin: auto;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo-text {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .search-box {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .search-box {
+      display: flex;
+      align-items: center;
+      background-color: var(--color-surface-container);
+      padding: 6px 12px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-outline-variant);
+    }
+  }
+
+  .search-icon {
+    font-size: 20px;
+    color: var(--color-on-surface-variant);
+    margin-right: 8px;
+  }
+
+  .search-input {
+    width: 192px;
+    background: transparent;
+    color: var(--color-on-surface);
+  }
+
+  .search-input::placeholder {
+    color: var(--color-on-surface-variant);
+  }
+
+  .topbar-icons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--color-on-surface-variant);
+  }
+
+  .icon-link {
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .icon-link:hover {
+    color: var(--color-primary);
+  }
+</style>

@@ -1,0 +1,246 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  technologies: string[];
+  github?: string;
+  url?: string;
+  isHighlighted?: boolean;
+}
+
+const {
+  title,
+  description,
+  image,
+  technologies,
+  github,
+  url,
+  isHighlighted = false,
+} = Astro.props;
+
+// Generate random engagement numbers
+const comments = Math.floor(Math.random() * 10) + 1;
+const reposts = Math.floor(Math.random() * 20) + 5;
+const likes = Math.floor(Math.random() * 200) + 50;
+const views = Math.floor(Math.random() * 10000) + 1000;
+---
+
+<article class={`feed-card project-card ${isHighlighted ? "glow-active" : ""}`}>
+  <div class="card-content">
+    <div class="card-image-container">
+      <img class="card-image" src={image} alt={title} />
+    </div>
+    <div class="card-info">
+      <h3 class="font-headline-sm card-title">{title}</h3>
+      <p class="font-body-sm card-description">{description}</p>
+      <div class="card-tags font-code-label">
+        {technologies.map((tech) => <span class="tag">{tech}</span>)}
+      </div>
+    </div>
+  </div>
+  <div class="card-actions">
+    {
+      url && (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary font-body-sm"
+        >
+          View Project
+        </a>
+      )
+    }
+    {
+      github && (
+        <a
+          href={github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-secondary font-body-sm"
+        >
+          Source Code
+        </a>
+      )
+    }
+  </div>
+  <div class="card-engagement font-code-label">
+    <div class="engagement-stats">
+      <span class="stat">
+        <span class="material-symbols-outlined stat-icon">chat_bubble</span>
+        {comments}
+      </span>
+      <span class="stat stat-repost">
+        <span class="material-symbols-outlined stat-icon">repeat</span>
+        {reposts}
+      </span>
+      <span class="stat stat-like">
+        <span class="material-symbols-outlined stat-icon">favorite</span>
+        {likes}
+      </span>
+    </div>
+    <span class="stat-views">
+      <span class="material-symbols-outlined stat-icon">equalizer</span>
+      {views.toLocaleString()}
+    </span>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .card-content {
+      flex-direction: row;
+    }
+  }
+
+  .card-image-container {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-color: var(--color-surface-container);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-outline-variant);
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .card-image-container {
+      width: 33.333%;
+    }
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .card-image-container:hover .card-image {
+    transform: scale(1.05);
+  }
+
+  .card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-title {
+    color: var(--color-primary);
+  }
+
+  .card-description {
+    color: var(--color-on-surface-variant);
+  }
+
+  .card-tags {
+    color: var(--color-tertiary);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag::before {
+    content: "[";
+  }
+
+  .tag::after {
+    content: "]";
+  }
+
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    flex: 1;
+    padding: 8px 16px;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--color-outline-variant);
+    color: var(--color-on-surface);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-surface-container);
+  }
+
+  .card-engagement {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-outline-variant);
+    color: var(--color-on-surface-variant);
+  }
+
+  .engagement-stats {
+    display: flex;
+    gap: 16px;
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .stat:hover {
+    color: var(--color-primary);
+  }
+
+  .stat-repost:hover {
+    color: #4ade80;
+  }
+
+  .stat-like:hover {
+    color: #f87171;
+  }
+
+  .stat-icon {
+    font-size: 16px;
+  }
+
+  .stat-views {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+</style>
+

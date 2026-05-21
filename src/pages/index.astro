@@ -1,50 +1,38 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Experiencia from "../secciones/Experiencia.astro";
-import Hero from "../secciones/Hero.astro";
-import InfoDetails from "../secciones/InfoDetails.astro";
-import Proyectos from "../secciones/Proyectos.astro";
-import SobreMi from "../secciones/SobreMi.astro";
-import Tecnologias from "../secciones/Tecnologias.astro";
+import TopBar from "../components/TopBar.astro";
+import SidebarLeft from "../components/SidebarLeft.astro";
+import MainFeed from "../components/MainFeed.astro";
+import SidebarRight from "../components/SidebarRight.astro";
+import MobileNav from "../components/MobileNav.astro";
+import { proyectos } from "../data/proyectos.js";
 ---
 
-<Layout title="Orlando Téllez">
-  <main>
-    <Hero />
-    <section>
-      <article>
-        <Experiencia />
-        <InfoDetails />
-      </article>
-    </section>
-    <Proyectos />
-    <Tecnologias />
-    <SobreMi />
+<Layout title="DevFeed | Orlando Téllez Portfolio">
+  <TopBar />
+
+  <main class="main-container">
+    <SidebarLeft />
+    <MainFeed projects={proyectos} />
+    <SidebarRight />
   </main>
+
+  <MobileNav />
 </Layout>
 
 <style>
-  section {
-    background-color: var(--color-fuente-tag);
-    width: 100%;
-    padding: 75px 0px;
-    padding: 20px;
-  }
-
-  article {
+  .main-container {
+    max-width: var(--spacing-container-max);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 30px 0px;
-    width: 100%;
-    max-width: 1024px;
+    padding-bottom: 80px;
   }
 
-  @media only screen and (min-width: 1024px) {
-    article {
-      display: flex;
+  @media (min-width: 1024px) {
+    .main-container {
       flex-direction: row;
+      padding-bottom: 0;
     }
   }
 </style>

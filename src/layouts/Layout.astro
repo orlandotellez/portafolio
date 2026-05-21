@@ -1,37 +1,136 @@
 ---
-// Supports weights 200-700
-import "@fontsource-variable/oswald";
-// Supports weights 100-900
 import "@fontsource-variable/onest";
+import "@fontsource-variable/oswald";
+import "@fontsource/hanken-grotesk/400.css";
+import "@fontsource/hanken-grotesk/600.css";
+import "@fontsource/hanken-grotesk/700.css";
+import "@fontsource/hanken-grotesk/800.css";
+import "@fontsource/jetbrains-mono/500.css";
 
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
+    <meta
+      name="description"
+      content="Orlando Téllez - Full Stack Developer Portfolio"
+    />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <Header />
+  <body class="body-base">
     <slot />
-    <Footer />
   </body>
 </html>
 
 <style is:global>
   :root {
+    /* Colors */
+    --color-surface: #000000;
+    --color-surface-dim: #000000;
+    --color-surface-container: #201f1f;
+    --color-surface-container-low: #1c1b1b;
+    --color-surface-container-high: #2a2a2a;
+    --color-surface-container-lowest: #0e0e0e;
+    --color-surface-bright: #3a3939;
+    --color-surface-variant: #353534;
+
+    --color-primary: #a4c9ff;
+    --color-primary-container: #3178c6;
+    --color-on-primary: #00315d;
+    --color-on-primary-fixed: #001c39;
+    --color-on-primary-fixed-variant: #004883;
+    --color-primary-fixed: #d4e3ff;
+    --color-primary-fixed-dim: #a4c9ff;
+
+    --color-secondary: #f5ba98;
+    --color-secondary-container: #663d23;
+    --color-on-secondary: #4b270f;
+    --color-on-secondary-fixed: #321301;
+    --color-on-secondary-fixed-variant: #663d23;
+    --color-secondary-fixed: #ffdbc8;
+    --color-secondary-fixed-dim: #f5ba98;
+
+    --color-tertiary: #ffb871;
+    --color-tertiary-container: #ad6500;
+    --color-on-tertiary: #4a2800;
+    --color-on-tertiary-fixed: #2d1600;
+    --color-on-tertiary-fixed-variant: #6a3c00;
+    --color-tertiary-fixed: #ffdcbe;
+    --color-tertiary-fixed-dim: #ffb871;
+
+    --color-error: #ffb4ab;
+    --color-error-container: #93000a;
+    --color-on-error: #690005;
+    --color-on-error-container: #ffdad6;
+
+    --color-on-surface: #e5e2e1;
+    --color-on-surface-variant: #c1c7d3;
+    --color-on-background: #e5e2e1;
+    --color-inverse-surface: #e5e2e1;
+    --color-inverse-on-surface: #313030;
+    --color-inverse-primary: #005fac;
+
+    --color-outline: #8b919c;
+    --color-outline-variant: #1a1a1a;
+
+    /* Spacing */
+    --spacing-gutter: 1.5rem;
+    --spacing-sidebar-width: 280px;
+    --spacing-section-padding: 4rem;
+    --spacing-stack-gap: 1rem;
+    --spacing-container-max: 1200px;
+
+    /* Typography */
+    --font-headline-md: "Hanken Grotesk", sans-serif;
+    --font-display-lg: "Hanken Grotesk", sans-serif;
+    --font-body-md: "Hanken Grotesk", sans-serif;
+    --font-code-label: "JetBrains Mono", monospace;
+    --font-headline-sm: "Hanken Grotesk", sans-serif;
+    --font-body-sm: "Hanken Grotesk", sans-serif;
+
+    /* Font Sizes */
+    --font-size-headline-md: 24px;
+    --font-size-display-lg: 48px;
+    --font-size-body-md: 16px;
+    --font-size-code-label: 12px;
+    --font-size-headline-sm: 20px;
+    --font-size-body-sm: 14px;
+
+    /* Line Heights */
+    --line-height-headline-md: 32px;
+    --line-height-display-lg: 56px;
+    --line-height-body-md: 24px;
+    --line-height-code-label: 16px;
+    --line-height-headline-sm: 28px;
+    --line-height-body-sm: 20px;
+
+    /* Border Radius */
+    --radius-default: 0.125rem;
+    --radius-lg: 0.25rem;
+    --radius-xl: 0.5rem;
+    --radius-full: 0.75rem;
+
+    /* Legacy variables */
     --titulos: 2.5rem;
     --sub-titulos: 1.5rem;
     --ancho-maximo: 1024px;
@@ -71,36 +170,34 @@ import Footer from "../components/Footer.astro";
   }
 
   html {
-    /* font-family: system-ui, sans-serif; */
-    /* font-family: "Oswald Variable", sans-serif; */
-    font-family: "Onest Variable", sans-serif;
+    font-family: var(--font-body-md);
     background-size: 224px;
     scroll-behavior: smooth;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
   }
 
   body {
     width: 100%;
-    background: #0d1117;
-    background: linear-gradient(
-      138deg,
-      rgb(0, 0, 0) 0%,
-      rgb(21, 23, 29) 50%,
-      rgba(16, 22, 36, 1) 100%
-    );
   }
 
-  h1 {
-    color: var(--color-fuente);
-    font-size: 2.5rem;
+  .body-base {
+    font-family: var(--font-body-md);
+    background-color: #050505;
+    min-height: 100vh;
+    color: var(--color-on-surface);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-on-surface);
+    font-family: var(--font-headline-md);
   }
 
   p {
-    color: var(--color-fuente);
-    font-size: 1.2rem;
+    color: var(--color-on-surface);
   }
 
   li {
@@ -109,10 +206,189 @@ import Footer from "../components/Footer.astro";
 
   a {
     text-decoration: none;
-    color: var(--color-fuente);
+    color: inherit;
   }
 
-  button{
+  button {
     cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+
+  input {
+    font-family: inherit;
+    border: none;
+    outline: none;
+  }
+
+  /* ====== Material Symbols ====== */
+  .material-symbols-outlined {
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 24;
+    vertical-align: middle;
+    font-size: 24px;
+  }
+
+  /* ====== Custom Scrollbar ====== */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-surface-variant);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-outline-variant);
+  }
+
+  .font-headline-md {
+    font-family: var(--font-headline-md);
+    font-size: var(--font-size-headline-md);
+    line-height: var(--line-height-headline-md);
+    font-weight: 700;
+  }
+
+  .font-display-lg {
+    font-family: var(--font-display-lg);
+    font-size: var(--font-size-display-lg);
+    line-height: var(--line-height-display-lg);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .font-body-md {
+    font-family: var(--font-body-md);
+    font-size: var(--font-size-body-md);
+    line-height: var(--line-height-body-md);
+    font-weight: 400;
+  }
+
+  .font-code-label {
+    font-family: var(--font-code-label);
+    font-size: var(--font-size-code-label);
+    line-height: var(--line-height-code-label);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .font-headline-sm {
+    font-family: var(--font-headline-sm);
+    font-size: var(--font-size-headline-sm);
+    line-height: var(--line-height-headline-sm);
+    font-weight: 600;
+  }
+
+  .font-body-sm {
+    font-family: var(--font-body-sm);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--line-height-body-sm);
+    font-weight: 400;
+  }
+
+  /* Colors */
+  .text-primary {
+    color: var(--color-primary);
+  }
+  .text-on-surface {
+    color: var(--color-on-surface);
+  }
+  .text-on-surface-variant {
+    color: var(--color-on-surface-variant);
+  }
+  .text-tertiary {
+    color: var(--color-tertiary);
+  }
+  .text-on-primary {
+    color: var(--color-on-primary);
+  }
+  .text-on-secondary {
+    color: var(--color-on-secondary);
+  }
+  .text-on-secondary-container {
+    color: var(--color-on-secondary-container);
+  }
+  .text-error {
+    color: var(--color-error);
+  }
+
+  /* Backgrounds */
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+  .bg-surface-container {
+    background-color: var(--color-surface-container);
+  }
+  .bg-surface-container-low {
+    background-color: var(--color-surface-container-low);
+  }
+  .bg-surface-container-high {
+    background-color: var(--color-surface-container-high);
+  }
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  .bg-primary-container {
+    background-color: var(--color-primary-container);
+  }
+  .bg-secondary-container {
+    background-color: var(--color-secondary-container);
+  }
+  .bg-on-surface {
+    background-color: var(--color-on-surface);
+  }
+
+  /* Borders */
+  .border-outline {
+    border: 1px solid var(--color-outline);
+  }
+  .border-outline-variant {
+    border: 1px solid var(--color-outline-variant);
+  }
+
+  /* Border Radius */
+  .rounded {
+    border-radius: var(--radius-default);
+  }
+  .rounded-lg {
+    border-radius: var(--radius-lg);
+  }
+  .rounded-xl {
+    border-radius: var(--radius-xl);
+  }
+  .rounded-full {
+    border-radius: var(--radius-full);
+  }
+
+  .tech-badge {
+    transition: all 0.2s ease;
+  }
+
+  .tech-badge:hover {
+    filter: brightness(1.2) drop-shadow(0 0 8px rgba(164, 201, 255, 0.3));
+    transform: translateY(-1px);
+  }
+
+  .feed-card {
+    border: 1px solid #2d2d2d;
+    background-color: #0f0f0f;
+    transition: border-color 0.3s ease;
+  }
+
+  .feed-card:hover {
+    border-color: #3178c6;
+  }
+
+  .glow-active {
+    box-shadow: 0 0 15px rgba(49, 120, 198, 0.1);
   }
 </style>

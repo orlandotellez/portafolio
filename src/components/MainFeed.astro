@@ -1,0 +1,328 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+
+interface Props {
+  projects: {
+    subtitulo: string;
+    tecnologias: string[];
+    texto: string;
+    img: string;
+    url?: string;
+    github?: string;
+    destacado?: boolean;
+  }[];
+}
+
+const { projects } = Astro.props;
+
+const heroImage = "img/fondo.png";
+
+const allTechs = [...new Set(projects.flatMap((p) => p.tecnologias))].sort();
+---
+
+<section class="main-feed">
+  <!-- Hero Banner -->
+  <div class="hero-banner">
+    <img
+      class="hero-image"
+      src={heroImage}
+      alt="Futuristic cybersecurity and coding dashboard"
+    />
+  </div>
+
+  <!-- Tabs -->
+  <nav class="feed-tabs">
+    <button class="tab active font-body-md" data-section="projects">
+      Projects
+    </button>
+    <button class="tab font-body-md" data-section="about">About</button>
+  </nav>
+
+  <!-- Projects Section -->
+  <div id="section-projects" class="section-content">
+    <div class="project-filters">
+      <button class="filter-btn active" data-filter="principales">
+        Principales
+      </button>
+      {
+        allTechs.map((tech) => (
+          <button class="filter-btn" data-filter={tech}>
+            {tech}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="project-list">
+      {
+        projects.map((project, index) => (
+          <div
+            class="project-wrapper"
+            data-techs={project.tecnologias.join(",")}
+            data-destacado={project.destacado ? "true" : "false"}
+          >
+            <ProjectCard
+              title={project.subtitulo}
+              description={project.texto}
+              image={project.img}
+              technologies={project.tecnologias}
+              url={project.url}
+              github={project.github}
+              isHighlighted={project.destacado && index === 0}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div id="section-about" class="section-content" style="display: none">
+    <div class="about-card">
+      <h2 class="about-heading">Sobre mí</h2>
+      <p class="about-text">
+        Soy <strong>Orlando Téllez</strong>, desarrollador Full Stack con pasión
+        por <strong>TypeScript</strong>, <strong>Rust</strong> y la arquitectura de
+        software limpia. Me especializo en construir aplicaciones web modernas y eficientes,
+        desde el frontend con
+        <strong>React</strong>, <strong>Next.js</strong> y
+        <strong>Astro</strong>, hasta el backend con
+        <strong>Node.js</strong>, <strong>Fastify</strong> y
+        <strong>Axum</strong>.
+      </p>
+      <p class="about-text">
+        Creo firmemente que el buen software se construye sobre bases sólidas:
+        diseño con propósito, código limpio y aprendizaje constante. Disfruto
+        tanto resolver problemas complejos como compartir lo que aprendo con la
+        comunidad.
+      </p>
+
+      <div class="about-details">
+        <div class="about-item">
+          <span class="material-symbols-outlined about-icon">location_on</span>
+          <span>Managua, Nicaragua</span>
+        </div>
+        <div class="about-item">
+          <span class="material-symbols-outlined about-icon">code</span>
+          <span>Full Stack Developer</span>
+        </div>
+        <div class="about-item">
+          <span class="material-symbols-outlined about-icon">terminal</span>
+          <span>TypeScript · Rust · Linux</span>
+        </div>
+      </div>
+
+      <a href="/cv.pdf" class="about-cv-btn" download>
+        <span class="material-symbols-outlined">download</span>
+        Descargar CV
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Section switching (Projects / About)
+  document.querySelector<HTMLElement>(".feed-tabs")?.addEventListener("click", (e) => {
+    const tab = (e.target as HTMLElement).closest<HTMLElement>(".tab");
+    if (!tab) return;
+
+    document
+      .querySelectorAll<HTMLElement>(".tab")
+      .forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const section = tab.dataset.section;
+    document.querySelectorAll<HTMLElement>(".section-content").forEach((s) => {
+      s.style.display = s.id === `section-${section}` ? "block" : "none";
+    });
+  });
+
+  // Filter switching within Projects
+  document.querySelector<HTMLElement>(".project-filters")?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>(".filter-btn");
+    if (!btn) return;
+
+    document
+      .querySelectorAll<HTMLElement>(".filter-btn")
+      .forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.dataset.filter;
+
+    document.querySelectorAll<HTMLElement>(".project-wrapper").forEach((wrapper) => {
+      if (filter === "principales") {
+        wrapper.style.display =
+          wrapper.dataset.destacado === "true" ? "" : "none";
+      } else {
+        const techs = wrapper.dataset.techs.split(",");
+        wrapper.style.display = techs.includes(filter) ? "" : "none";
+      }
+    });
+  });
+
+  // Trigger initial filter
+  document.querySelector<HTMLElement>(".filter-btn.active")?.click();
+</script>
+
+<style>
+  .main-feed {
+    flex: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  .hero-banner {
+    position: relative;
+    width: 100%;
+    height: 192px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-banner {
+      height: 256px;
+    }
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .feed-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--color-outline-variant);
+    position: sticky;
+    top: 64px;
+    z-index: 40;
+    background-color: var(--color-surface);
+    backdrop-filter: blur(8px);
+  }
+
+  .tab {
+    flex: 1;
+    padding: 16px;
+    color: var(--color-on-surface-variant);
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .tab:hover {
+    color: var(--color-on-surface);
+    background-color: var(--color-surface-container);
+  }
+
+  .tab.active {
+    color: var(--color-primary);
+    font-weight: 700;
+    border-bottom-color: var(--color-primary);
+  }
+
+  .section-content {
+    padding: var(--spacing-gutter);
+  }
+
+  /* Project Filters */
+  .project-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .filter-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-on-surface-variant);
+    background-color: transparent;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-btn:hover {
+    color: var(--color-on-surface);
+    background-color: var(--color-surface-container);
+  }
+
+  .filter-btn.active {
+    color: var(--color-surface);
+    background-color: var(--color-on-surface);
+    border-color: var(--color-on-surface);
+  }
+
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-stack-gap);
+  }
+
+  /* About */
+  .about-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    background-color: #0f0f0f;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-outline-variant);
+  }
+
+  .about-heading {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .about-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+  }
+
+  .about-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  .about-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--color-on-surface-variant);
+  }
+
+  .about-icon {
+    font-size: 18px;
+    color: var(--color-primary);
+  }
+
+  .about-cv-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    background-color: var(--color-on-surface);
+    color: var(--color-surface);
+    border: none;
+    border-radius: var(--radius-default);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .about-cv-btn:hover {
+    opacity: 0.9;
+  }
+</style>

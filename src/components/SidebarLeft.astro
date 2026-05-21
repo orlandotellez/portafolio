@@ -1,0 +1,231 @@
+---
+import { github, linkedIn } from "../data/redesSociales.js";
+
+const profileImage =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuDX9S649UyQA9sRshiDZf89rgF_xTt1nXfZzQ5LF2pnMkdYBGnPI16E5i3PDGmlyhvTwvBYqH7-YCO-6GWc100FvB1JqL-6f0-cgGvVsoRFgbFR9ZbAY7Kln9iX7-2123CRVkVUr5-2B0P62XwArFV50b09pwUgPwsFXwaKZrjiTtQcOOW4P1VXmf2QQqej0V-TAY8Jlv_Dx7KIibJi1UQybyYvxh2YZ_a8Vb8Hiivvmzuzh5s884DP66UcXNoZ6-ftPk2oO_DdHyo";
+---
+
+<aside class="sidebar-left">
+  <!-- Profile Info -->
+  <div class="profile-section">
+    <div class="profile-image">
+      <img
+        src="https://avatars.githubusercontent.com/u/109451741?v=4"
+        alt="Orlando Téllez - Full Stack Developer"
+      />
+    </div>
+    <div class="profile-info">
+      <h2 class="font-headline-sm profile-name">
+        Orlando Téllez
+        <span class="material-symbols-outlined verified-icon">verified</span>
+      </h2>
+      <p class="font-body-sm profile-bio">
+        Full Stack Developer - TypeScript and Rust developer
+      </p>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="contact-section">
+    <div class="contact-email">
+      <span class="material-symbols-outlined contact-icon">mail</span>
+      <a href="mailto:orlandogabrieltellez@gmail.com" class="email-link">
+        orlandogabrieltellez@gmail.com
+      </a>
+    </div>
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Open to work
+    </div>
+    <a href="/cv.pdf" class="cv-btn" download>
+      <span class="material-symbols-outlined">download</span>
+      Descargar CV
+    </a>
+  </div>
+
+  <!-- Footer Links -->
+  <div class="sidebar-footer">
+    <div class="footer-item">
+      <span class="material-symbols-outlined footer-icon">location_on</span>
+      <span class="font-body-sm">Managua, Nicaragua</span>
+    </div>
+    <div class="footer-item">
+      <span class="material-symbols-outlined footer-icon">link</span>
+      <a
+        href={github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-body-sm link">github</a
+      >
+    </div>
+    <div class="footer-item">
+      <span class="material-symbols-outlined footer-icon">link</span>
+      <a
+        href={linkedIn}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-body-sm link">linkedIn</a
+      >
+    </div>
+  </div>
+</aside>
+
+<style>
+  .sidebar-left {
+    display: none;
+    flex-direction: column;
+    gap: var(--spacing-stack-gap);
+    padding: var(--spacing-gutter);
+    width: var(--spacing-sidebar-width);
+    flex-shrink: 0;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    border-right: 1px solid var(--color-outline-variant);
+    background-color: var(--color-surface);
+  }
+
+  @media (min-width: 1024px) {
+    .sidebar-left {
+      display: flex;
+    }
+  }
+
+  .profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .profile-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: var(--color-surface-container);
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-outline-variant);
+  }
+
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .profile-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .verified-icon {
+    font-size: 18px;
+    color: var(--color-primary);
+    font-variation-settings: "FILL" 1;
+  }
+
+  .profile-bio {
+    color: var(--color-on-surface-variant);
+  }
+
+  .contact-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .contact-email {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .contact-icon {
+    font-size: 18px;
+    color: var(--color-on-surface-variant);
+  }
+
+  .email-link {
+    font-size: 13px;
+    color: var(--color-primary);
+    word-break: break-all;
+  }
+
+  .email-link:hover {
+    text-decoration: underline;
+  }
+
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #22c55e;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #22c55e;
+  }
+
+  .cv-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    background-color: var(--color-on-surface);
+    color: var(--color-surface);
+    border: none;
+    border-radius: var(--radius-default);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .cv-btn:hover {
+    opacity: 0.9;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--color-outline-variant);
+    padding-top: 16px;
+  }
+
+  .footer-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-on-surface-variant);
+  }
+
+  .footer-icon {
+    font-size: 18px;
+  }
+
+  .link {
+    color: var(--color-primary);
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+</style>
