@@ -44,7 +44,12 @@ const techs = {
     { name: "Express.js", color: "#404d59" },
     { name: "PostgreSQL", color: "#316192" },
     { name: "Rust", color: "#000000", badgeColor: "#F5F5F5" },
-    { name: "Axum", color: "#000000", badgeColor: "#F5F5F5", img: "https://cdn.simpleicons.org/rust/000000" },
+    {
+      name: "Axum",
+      color: "#000000",
+      badgeColor: "#F5F5F5",
+      img: "https://cdn.simpleicons.org/rust/000000",
+    },
     { name: "Strapi", color: "#4945FF" },
   ],
   tools: [
@@ -56,7 +61,7 @@ const techs = {
 };
 
 function slug(name: string) {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, "")
+  return name.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 ---
 
@@ -100,7 +105,7 @@ function slug(name: string) {
     </div>
     {
       tabCategories.map((tab) => {
-        const isFirst = tabCategories.indexOf(tab) === 0
+        const isFirst = tabCategories.indexOf(tab) === 0;
         return (
           <div
             id={`tech-${tab.id}`}
@@ -108,25 +113,25 @@ function slug(name: string) {
             class:list={{ active: isFirst }}
           >
             <div class="tech-grid">
-              {
-                techs[tab.id].map((tech) => {
-                  const bc = tech.badgeColor || tech.color
-                  const imgSrc = tech.img || `https://cdn.simpleicons.org/${slug(tech.name)}/${tech.color.replace("#", "")}`
-                  return (
-                    <div
-                      class="tech-item"
-                      style={`background-color: ${bc}18; border: 1px solid ${bc}30;`}
-                      title={tech.name}
-                    >
-                      <img alt={tech.name} src={imgSrc} />
-                      <span class="tech-item-name">{tech.name}</span>
-                    </div>
-                  )
-                })
-              }
+              {techs[tab.id].map((tech) => {
+                const bc = tech.badgeColor || tech.color;
+                const imgSrc =
+                  tech.img ||
+                  `https://cdn.simpleicons.org/${slug(tech.name)}/${tech.color.replace("#", "")}`;
+                return (
+                  <div
+                    class="tech-item"
+                    style={`background-color: ${bc}18; border: 1px solid ${bc}30;`}
+                    title={tech.name}
+                  >
+                    <img alt={tech.name} src={imgSrc} />
+                    <span class="tech-item-name">{tech.name}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
-        )
+        );
       })
     }
   </div>
@@ -141,14 +146,18 @@ function slug(name: string) {
 
 <script>
   document.querySelector(".tabs")?.addEventListener("click", (e) => {
-    const btn = e.target.closest(".tab-btn")
-    if (!btn) return
-    const tab = btn.dataset.tab
-    document.querySelectorAll(".tech-panel").forEach((p) => p.classList.remove("active"))
-    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"))
-    document.getElementById(`tech-${tab}`).classList.add("active")
-    btn.classList.add("active")
-  })
+    const btn = e.target.closest(".tab-btn");
+    if (!btn) return;
+    const tab = btn.dataset.tab;
+    document
+      .querySelectorAll(".tech-panel")
+      .forEach((p) => p.classList.remove("active"));
+    document
+      .querySelectorAll(".tab-btn")
+      .forEach((b) => b.classList.remove("active"));
+    document.getElementById(`tech-${tab}`).classList.add("active");
+    btn.classList.add("active");
+  });
 </script>
 
 <style>
@@ -163,6 +172,7 @@ function slug(name: string) {
     height: calc(100vh - 64px);
     background-color: var(--color-surface);
     border-left: 1px solid var(--color-outline-variant);
+    border-right: 1px solid var(--color-outline-variant);
     overflow-y: auto;
   }
 
