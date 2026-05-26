@@ -85,7 +85,7 @@ export const proyectos = [
   },
   {
     subtitulo: "Dashboards",
-    tecnologias: ["NextJs", "TS", "Full Stack"],
+    tecnologias: ["Fastify", "NextJs", "TS", "Full Stack"],
     texto: "Plantillas Full Stack para paneles administrativos.",
     img: "/img/proyecto-dashboards.png",
     url: "https://dashboards-template.vercel.app/",
