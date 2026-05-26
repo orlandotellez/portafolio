@@ -122,43 +122,51 @@ const allTechs = [...new Set(projects.flatMap((p) => p.tecnologias))].sort();
 
 <script>
   // Section switching (Projects / About)
-  document.querySelector<HTMLElement>(".feed-tabs")?.addEventListener("click", (e) => {
-    const tab = (e.target as HTMLElement).closest<HTMLElement>(".tab");
-    if (!tab) return;
+  document
+    .querySelector<HTMLElement>(".feed-tabs")
+    ?.addEventListener("click", (e) => {
+      const tab = (e.target as HTMLElement).closest<HTMLElement>(".tab");
+      if (!tab) return;
 
-    document
-      .querySelectorAll<HTMLElement>(".tab")
-      .forEach((t) => t.classList.remove("active"));
-    tab.classList.add("active");
+      document
+        .querySelectorAll<HTMLElement>(".tab")
+        .forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
 
-    const section = tab.dataset.section;
-    document.querySelectorAll<HTMLElement>(".section-content").forEach((s) => {
-      s.style.display = s.id === `section-${section}` ? "block" : "none";
+      const section = tab.dataset.section;
+      document
+        .querySelectorAll<HTMLElement>(".section-content")
+        .forEach((s) => {
+          s.style.display = s.id === `section-${section}` ? "block" : "none";
+        });
     });
-  });
 
   // Filter switching within Projects
-  document.querySelector<HTMLElement>(".project-filters")?.addEventListener("click", (e) => {
-    const btn = (e.target as HTMLElement).closest<HTMLElement>(".filter-btn");
-    if (!btn) return;
+  document
+    .querySelector<HTMLElement>(".project-filters")
+    ?.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>(".filter-btn");
+      if (!btn) return;
 
-    document
-      .querySelectorAll<HTMLElement>(".filter-btn")
-      .forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
+      document
+        .querySelectorAll<HTMLElement>(".filter-btn")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
 
-    const filter = btn.dataset.filter;
+      const filter = btn.dataset.filter;
 
-    document.querySelectorAll<HTMLElement>(".project-wrapper").forEach((wrapper) => {
-      if (filter === "principales") {
-        wrapper.style.display =
-          wrapper.dataset.destacado === "true" ? "" : "none";
-      } else {
-        const techs = wrapper.dataset.techs.split(",");
-        wrapper.style.display = techs.includes(filter) ? "" : "none";
-      }
+      document
+        .querySelectorAll<HTMLElement>(".project-wrapper")
+        .forEach((wrapper) => {
+          if (filter === "principales") {
+            wrapper.style.display =
+              wrapper.dataset.destacado === "true" ? "" : "none";
+          } else {
+            const techs = wrapper.dataset.techs.split(",");
+            wrapper.style.display = techs.includes(filter) ? "" : "none";
+          }
+        });
     });
-  });
 
   // Trigger initial filter
   document.querySelector<HTMLElement>(".filter-btn.active")?.click();
@@ -239,7 +247,7 @@ const allTechs = [...new Set(projects.flatMap((p) => p.tecnologias))].sort();
     color: var(--color-on-surface-variant);
     background-color: transparent;
     border: 1px solid var(--color-outline-variant);
-    border-radius: 999px;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s ease;
   }
@@ -268,7 +276,7 @@ const allTechs = [...new Set(projects.flatMap((p) => p.tecnologias))].sort();
     gap: 16px;
     padding: 24px;
     background-color: #0f0f0f;
-    border-radius: var(--radius-xl);
+    border-radius: 5px;
     border: 1px solid var(--color-outline-variant);
   }
 
@@ -314,7 +322,7 @@ const allTechs = [...new Set(projects.flatMap((p) => p.tecnologias))].sort();
     background-color: var(--color-on-surface);
     color: var(--color-surface);
     border: none;
-    border-radius: var(--radius-default);
+    border-radius: 5px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
