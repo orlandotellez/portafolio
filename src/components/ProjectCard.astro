@@ -4,6 +4,7 @@ interface Props {
   description: string;
   image: string;
   technologies: string[];
+  slug: string;
   github?: string;
   url?: string;
   isHighlighted?: boolean;
@@ -14,10 +15,13 @@ const {
   description,
   image,
   technologies,
+  slug,
   github,
   url,
   isHighlighted = false,
 } = Astro.props;
+
+const hasExternalUrl = !!url && !url.includes("github.com");
 ---
 
 <article class={`feed-card project-card ${isHighlighted ? "glow-active" : ""}`}>
@@ -34,27 +38,30 @@ const {
     </div>
   </div>
   <div class="card-actions">
-    {
-      url && (
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-primary font-body-sm"
-        >
-          View Project
-        </a>
-      )
-    }
+    <a href={`/proyectos/${slug}`} class="btn-detail font-body-sm">
+      <span class="material-symbols-outlined btn-act-icon">info</span>
+      Ver detalles
+    </a>
+    <a
+      href={url || "#"}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-project font-body-sm"
+      style={!hasExternalUrl ? "display: none" : ""}
+    >
+      <span class="material-symbols-outlined btn-act-icon">open_in_new</span>
+      Ver Proyecto
+    </a>
     {
       github && (
         <a
           href={github}
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-secondary font-body-sm"
+          class="btn-code font-body-sm"
         >
-          Source Code
+          <span class="material-symbols-outlined btn-act-icon">code</span>
+          Código fuente
         </a>
       )
     }
@@ -142,36 +149,68 @@ const {
   .card-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px;
+    padding-top: 4px;
   }
 
-  .btn-primary,
-  .btn-secondary {
+  .btn-detail,
+  .btn-project,
+  .btn-code {
     flex: 1;
-    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 14px;
     border-radius: 5px;
     text-align: center;
-    font-weight: bold;
-    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: 12px;
+    text-decoration: none;
+    min-width: 0;
+    cursor: pointer;
   }
 
-  .btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
+  .btn-act-icon {
+    font-size: 15px;
   }
 
-  .btn-primary:hover {
+  /* Detail button - white filled */
+  .btn-detail {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
+  }
+
+  .btn-detail:hover {
     opacity: 0.9;
   }
 
-  .btn-secondary {
-    border: 1px solid var(--color-outline-variant);
-    color: var(--color-on-surface);
+  /* Project button - gray filled */
+  .btn-project {
+    background-color: #2a2a2a;
+    color: #e5e2e1;
+    border: 1px solid #3a3a3a;
   }
 
-  .btn-secondary:hover {
-    background-color: var(--color-surface-container);
+  .btn-project:hover {
+    background-color: #3a3a3a;
+    border-color: #555555;
   }
+
+  /* Code button - transparent outlined */
+  .btn-code {
+    background-color: transparent;
+    color: var(--color-on-surface);
+    border: 1px solid var(--color-outline-variant);
+  }
+
+  .btn-code:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-outline);
+  }
+
+
 
   .card-engagement {
     display: flex;

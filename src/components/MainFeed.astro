@@ -1,5 +1,6 @@
 ---
 import ProjectCard from "./ProjectCard.astro";
+import { toSlug } from "../data/proyectos.js";
 
 interface Props {
   projects: {
@@ -66,6 +67,7 @@ const mainTechs = ["React", "TS", "Rust", "NextJs", "Astro", "NodeJs", "Fastify"
               description={project.texto}
               image={project.img}
               technologies={project.tecnologias}
+              slug={toSlug(project.subtitulo)}
               url={project.url}
               github={project.github}
               isHighlighted={project.destacado && index === 0}
