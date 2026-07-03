@@ -1,6 +1,4 @@
 ---
-import { github } from "../data/redesSociales.js";
-import githubIcon from "../assets/iconos/github.svg";
 ---
 
 <header class="topbar">
@@ -11,24 +9,6 @@ import githubIcon from "../assets/iconos/github.svg";
       <span class="material-symbols-outlined verified-icon">verified</span>
     </div>
     <div class="topbar-right">
-      <div class="search-box">
-        <span class="material-symbols-outlined search-icon">search</span>
-        <input
-          class="search-input font-body-sm"
-          placeholder="Search projects..."
-          type="text"
-        />
-      </div>
-      <div class="topbar-icons">
-        <a
-          href={github}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="icon-link"
-        >
-          <img src={githubIcon.src} alt="github icon" />
-        </a>
-      </div>
     </div>
   </div>
 </header>
@@ -81,50 +61,5 @@ import githubIcon from "../assets/iconos/github.svg";
     font-variation-settings: "FILL" 1;
   }
 
-  .search-box {
-    display: none;
-  }
 
-  @media (min-width: 768px) {
-    .search-box {
-      display: flex;
-      align-items: center;
-      background-color: var(--color-surface-container);
-      padding: 6px 12px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--color-outline-variant);
-    }
-  }
-
-  .search-icon {
-    font-size: 20px;
-    color: var(--color-on-surface-variant);
-    margin-right: 8px;
-  }
-
-  .search-input {
-    width: 192px;
-    background: transparent;
-    color: var(--color-on-surface);
-  }
-
-  .search-input::placeholder {
-    color: var(--color-on-surface-variant);
-  }
-
-  .topbar-icons {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    color: var(--color-on-surface-variant);
-  }
-
-  .icon-link {
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-
-  .icon-link:hover {
-    color: var(--color-primary);
-  }
 </style>
