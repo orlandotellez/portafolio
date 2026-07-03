@@ -1,5 +1,7 @@
 ---
-import { github, linkedIn } from "../data/redesSociales.js";
+import { github, linkedIn, youtube } from "../data/redesSociales.js";
+import githubIcon from "../assets/iconos/github.svg";
+import linkedinIcon from "../assets/iconos/linkedin.svg";
 ---
 
 <aside class="sidebar-left">
@@ -24,16 +26,6 @@ import { github, linkedIn } from "../data/redesSociales.js";
 
   <!-- Contact -->
   <div class="contact-section">
-    <div class="contact-email">
-      <span class="material-symbols-outlined contact-icon">mail</span>
-      <a href="mailto:orlandogabrieltellez@gmail.com" class="email-link">
-        orlandogabrieltellez@gmail.com
-      </a>
-    </div>
-    <div class="status-badge">
-      <span class="status-dot"></span>
-      Open to work
-    </div>
     <a href="/cv-orlandotellez.pdf" class="cv-btn" download>
       <span class="material-symbols-outlined">download</span>
       Descargar CV
@@ -43,11 +35,7 @@ import { github, linkedIn } from "../data/redesSociales.js";
   <!-- Footer Links -->
   <div class="sidebar-footer">
     <div class="footer-item">
-      <span class="material-symbols-outlined footer-icon">location_on</span>
-      <span class="font-body-sm">Managua, Nicaragua</span>
-    </div>
-    <div class="footer-item">
-      <span class="material-symbols-outlined footer-icon">link</span>
+      <img src={githubIcon.src} alt="GitHub" class="social-icon" />
       <a
         href={github}
         target="_blank"
@@ -56,13 +44,32 @@ import { github, linkedIn } from "../data/redesSociales.js";
       >
     </div>
     <div class="footer-item">
-      <span class="material-symbols-outlined footer-icon">link</span>
+      <img src={linkedinIcon.src} alt="LinkedIn" class="social-icon" />
       <a
         href={linkedIn}
         target="_blank"
         rel="noopener noreferrer"
         class="font-body-sm link">linkedIn</a
       >
+    </div>
+    <div class="footer-item">
+      <img
+        src="https://cdn.simpleicons.org/youtube/FFFFFF"
+        alt="YouTube"
+        class="social-icon"
+      />
+      <a
+        href={youtube}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-body-sm link">youtube</a
+      >
+    </div>
+    <div class="footer-item">
+      <span class="material-symbols-outlined contact-icon">mail</span>
+      <a href="mailto:orlandogabrieltellez@gmail.com" class="font-body-sm link">
+        orlandogabrieltellez@gmail.com
+      </a>
     </div>
   </div>
 </aside>
@@ -140,41 +147,9 @@ import { github, linkedIn } from "../data/redesSociales.js";
     margin-top: 16px;
   }
 
-  .contact-email {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
   .contact-icon {
     font-size: 18px;
     color: var(--color-on-surface-variant);
-  }
-
-  .email-link {
-    font-size: 13px;
-    color: var(--color-primary);
-    word-break: break-all;
-  }
-
-  .email-link:hover {
-    text-decoration: underline;
-  }
-
-  .status-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #22c55e;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #22c55e;
   }
 
   .cv-btn {
@@ -215,8 +190,10 @@ import { github, linkedIn } from "../data/redesSociales.js";
     color: var(--color-on-surface-variant);
   }
 
-  .footer-icon {
-    font-size: 18px;
+  .social-icon {
+    width: 18px;
+    height: 18px;
+    filter: var(--color-filter-on-surface-variant, none);
   }
 
   .link {
