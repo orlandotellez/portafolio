@@ -1,3 +1,10 @@
+export function toSlug(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 export const proyectos = [
   {
     subtitulo: "Bookteka",
@@ -6,7 +13,10 @@ export const proyectos = [
     img: "/img/proyecto-bookteka.png",
     url: "https://bookteka.vercel.app/",
     github: "https://github.com/OrlandoTellez/bookteka",
-    destacado: true
+    destacado: true,
+    app: true,
+    activeApp: false,
+    releases: "https://github.com/OrlandoTellez/bookteka/releases"
   },
   {
     subtitulo: "TechComponents",
@@ -15,16 +25,30 @@ export const proyectos = [
     img: "/img/proyecto-techcomponents.png",
     url: "https://techcomponents.vercel.app/",
     github: "https://github.com/OrlandoTellez/techcomponents",
-    destacado: true
   },
+  {
+    subtitulo: "POS System",
+    tecnologias: ["TS", "Rust", "Fastify", "Tauri", "CSS"],
+    texto: "Sistema POS (Point of Sale) moderno con backend en Fastify y Rust para gestión de ventas e inventario.",
+    img: "/img/proyecto-pos-system.png",
+    url: "https://github.com/orlandotellez/pos-system",
+    github: "https://github.com/orlandotellez/pos-system",
+    destacado: true,
+    app: true,
+    activeApp: true,
+    releases: "https://github.com/orlandotellez/pos-system/releases"
+  },
+
   {
     subtitulo: "Anteny App",
     tecnologias: ["React Native", "TS", "Matrix"],
     texto: "Aplicación de mensajería construida con React Native y Matrix.",
     img: "/img/proyecto-anteny.png",
-    url: "https://anteny-app.vercel.app/",
     github: "https://github.com/OrlandoTellez/anteny-app",
-    destacado: true
+    destacado: true,
+    app: true,
+    activeApp: false,
+    releases: "https://github.com/OrlandoTellez/anteny-app/releases"
   },
   {
     subtitulo: "Restix",
