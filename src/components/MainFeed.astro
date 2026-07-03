@@ -17,7 +17,7 @@ const { projects } = Astro.props;
 
 const heroImage = "img/fondo.png";
 
-const allTechs = [...new Set(projects.flatMap((p) => p.tecnologias))].sort();
+const mainTechs = ["React", "TS", "Rust", "NextJs", "Astro", "NodeJs", "Fastify", "Dotfiles"];
 ---
 
 <section class="main-feed">
@@ -45,7 +45,7 @@ const allTechs = [...new Set(projects.flatMap((p) => p.tecnologias))].sort();
         Principales
       </button>
       {
-        allTechs.map((tech) => (
+        mainTechs.map((tech) => (
           <button class="filter-btn" data-filter={tech}>
             {tech}
           </button>
