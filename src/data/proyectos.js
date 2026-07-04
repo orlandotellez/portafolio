@@ -11,7 +11,6 @@ export const proyectos = [
     tecnologias: ["Astro", "React", "React Native", "TS", "NodeJs"],
     texto: "Tu biblioteca digital personal con lector integrado.",
     img: "/img/proyecto-bookteka.png",
-    url: "https://bookteka.vercel.app/",
     github: "https://github.com/OrlandoTellez/bookteka",
     destacado: true,
     app: true,

@@ -1,4 +1,6 @@
 ---
+import fs from "fs";
+import path from "path";
 import Layout from "../../layouts/Layout.astro";
 import TopBar from "../../components/TopBar.astro";
 import SidebarLeft from "../../components/SidebarLeft.astro";
@@ -20,6 +22,23 @@ const { project } = Astro.props;
 const slug = toSlug(project.subtitulo);
 const hasExternalUrl = !!project.url && !project.url.includes("github.com");
 const hasGithub = !!project.github;
+
+// Detect images in project folder (e.g. /public/img/bookteka/1.webp, 2.webp, etc.)
+const imgFolderPath = path.join(process.cwd(), "public", "img", slug);
+let projectImages = [];
+
+if (fs.existsSync(imgFolderPath)) {
+  projectImages = fs
+    .readdirSync(imgFolderPath)
+    .filter((f) => /\.(webp|png|jpg|jpeg)$/i.test(f))
+    .sort();
+}
+
+const hasProjectImages = projectImages.length > 1;
+const coverImage = projectImages.includes("1.webp")
+  ? `/img/${slug}/1.webp`
+  : project.img;
+const galleryImages = projectImages.filter((f) => f !== "1.webp");
 ---
 
 <Layout title={`${project.subtitulo} | Orlando Téllez Portfolio`}>
@@ -37,7 +56,7 @@ const hasGithub = !!project.github;
 
       <!-- Hero image -->
       <div class="detail-hero">
-        <img class="detail-image" src={project.img} alt={project.subtitulo} />
+        <img class="detail-image" src={coverImage} alt={project.subtitulo} />
       </div>
 
       <!-- Title & description -->
@@ -117,6 +136,32 @@ const hasGithub = !!project.github;
         </div>
 
         {
+          hasProjectImages && (
+            <div class="detail-card">
+              <h2 class="detail-card-title">
+                <span class="material-symbols-outlined card-title-icon"
+                  >photo_library</span
+                >
+                Imágenes
+              </h2>
+              <div class="detail-gallery">
+                {
+                  galleryImages.map((img) => (
+                    <img
+                      class="gallery-image"
+                      src={`/img/${slug}/${img}`}
+                      alt={`${project.subtitulo} - ${img}`}
+                      loading="lazy"
+                      data-gallery
+                    />
+                  ))
+                }
+              </div>
+            </div>
+          )
+        }
+
+        {
           project.activeApp && project.releases && (
             <div class="detail-card">
               <h2 class="detail-card-title">
@@ -147,6 +192,14 @@ const hasGithub = !!project.github;
   </main>
 
   <MobileNav />
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close" aria-label="Cerrar">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <img id="lightbox-img" class="lightbox-image" alt="" />
+  </div>
 </Layout>
 
 <style>
@@ -378,4 +431,118 @@ const hasGithub = !!project.github;
   .releases-link span {
     font-size: 16px;
   }
+
+  /* Gallery */
+  .detail-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .gallery-image {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid var(--color-outline-variant);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .gallery-image:hover {
+    opacity: 0.85;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+
+  .lightbox.open {
+    display: flex;
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+
+  .lightbox-close:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .lightbox-close span {
+    font-size: 28px;
+  }
 </style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const closeBtn = document.querySelector(".lightbox-close");
+
+  function openLightbox(src) {
+    lightboxImg.src = src;
+    lightboxImg.alt = src;
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  // Click on any gallery image
+  document.addEventListener("click", (e) => {
+    const img = e.target.closest("[data-gallery]");
+    if (img) {
+      e.preventDefault();
+      openLightbox(img.src);
+    }
+  });
+
+  // Close on X button
+  closeBtn?.addEventListener("click", closeLightbox);
+
+  // Close on click outside the image (on the backdrop)
+  lightbox?.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && lightbox?.classList.contains("open")) {
+      closeLightbox();
+    }
+  });
+</script>

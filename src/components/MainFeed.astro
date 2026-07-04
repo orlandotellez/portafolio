@@ -1,4 +1,6 @@
 ---
+import fs from "fs";
+import path from "path";
 import ProjectCard from "./ProjectCard.astro";
 import { toSlug } from "../data/proyectos.js";
 
@@ -17,6 +19,18 @@ interface Props {
 const { projects } = Astro.props;
 
 const heroImage = "img/fondo.png";
+
+function getProjectCover(project: Props["projects"][number]): string {
+  const slug = toSlug(project.subtitulo);
+  const imgFolderPath = path.join(process.cwd(), "public", "img", slug);
+  if (fs.existsSync(imgFolderPath)) {
+    const files = fs.readdirSync(imgFolderPath);
+    if (files.includes("1.webp")) {
+      return `/img/${slug}/1.webp`;
+    }
+  }
+  return project.img;
+}
 
 const mainTechs = ["React", "TS", "Rust", "NextJs", "Astro", "NodeJs", "Fastify", "Dotfiles"];
 ---
@@ -65,7 +79,7 @@ const mainTechs = ["React", "TS", "Rust", "NextJs", "Astro", "NodeJs", "Fastify"
             <ProjectCard
               title={project.subtitulo}
               description={project.texto}
-              image={project.img}
+              image={getProjectCover(project)}
               technologies={project.tecnologias}
               slug={toSlug(project.subtitulo)}
               url={project.url}
