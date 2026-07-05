@@ -136,38 +136,12 @@ const galleryImages = projectImages.filter((f) => f !== "1.webp");
         </div>
 
         {
-          hasProjectImages && (
-            <div class="detail-card">
-              <h2 class="detail-card-title">
-                <span class="material-symbols-outlined card-title-icon"
-                  >photo_library</span
-                >
-                Imágenes
-              </h2>
-              <div class="detail-gallery">
-                {
-                  galleryImages.map((img) => (
-                    <img
-                      class="gallery-image"
-                      src={`/img/${slug}/${img}`}
-                      alt={`${project.subtitulo} - ${img}`}
-                      loading="lazy"
-                      data-gallery
-                    />
-                  ))
-                }
-              </div>
-            </div>
-          )
-        }
-
-        {
           project.activeApp && project.releases && (
             <div class="detail-card">
               <h2 class="detail-card-title">
-                <span class="material-symbols-outlined card-title-icon"
-                  >new_releases</span
-                >
+                <span class="material-symbols-outlined card-title-icon">
+                  new_releases
+                </span>
                 Releases
               </h2>
               <p class="detail-card-text">
@@ -182,6 +156,30 @@ const galleryImages = projectImages.filter((f) => f !== "1.webp");
                 <span class="material-symbols-outlined">open_in_new</span>
                 Ver Releases en GitHub
               </a>
+            </div>
+          )
+        }
+
+        {
+          hasProjectImages && (
+            <div class="detail-card">
+              <h2 class="detail-card-title">
+                <span class="material-symbols-outlined card-title-icon">
+                  photo_library
+                </span>
+                Imágenes
+              </h2>
+              <div class="detail-gallery">
+                {galleryImages.map((img) => (
+                  <img
+                    class="gallery-image"
+                    src={`/img/${slug}/${img}`}
+                    alt={`${project.subtitulo} - ${img}`}
+                    loading="lazy"
+                    data-gallery
+                  />
+                ))}
+              </div>
             </div>
           )
         }
