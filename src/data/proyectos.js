@@ -14,7 +14,7 @@ export const proyectos = [
     github: "https://github.com/OrlandoTellez/bookteka",
     destacado: true,
     app: true,
-    activeApp: false,
+    activeApp: true,
     releases: "https://github.com/OrlandoTellez/bookteka/releases"
   },
   {
