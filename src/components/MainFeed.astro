@@ -4,7 +4,7 @@ import path from "path";
 import ProjectCard from "./ProjectCard.astro";
 import RetoCard from "./RetoCard.astro";
 import { getCollection } from "astro:content";
-import { compararRetos } from "../content.config";
+import { compararRetos, retoNumero } from "../content.config";
 import { toSlug } from "../data/proyectos.js";
 
 interface Props {
@@ -21,8 +21,9 @@ interface Props {
 
 const { projects } = Astro.props;
 
+// Más recientes primero (número mayor)
 const retos = (await getCollection("retos")).sort((a, b) =>
-  compararRetos(a.id, b.id),
+  compararRetos(b.id, a.id),
 );
 
 const heroImage = "img/fondo.png";
@@ -154,8 +155,18 @@ const mainTechs = [
 
   <!-- Retos Section -->
   <div id="section-retos" class="section-content" style="display: none">
+    <div class="reto-filters">
+      <button class="filter-btn active" data-reto-order="desc">
+        Más recientes
+      </button>
+      <button class="filter-btn" data-reto-order="asc">Más antiguos</button>
+    </div>
     <div class="reto-list">
-      {retos.map((reto) => <RetoCard reto={reto} />)}
+      {retos.map((reto) => (
+        <div class="reto-wrapper" data-numero={retoNumero(reto.id) ?? "0"}>
+          <RetoCard reto={reto} />
+        </div>
+      ))}
     </div>
   </div>
 </section>
@@ -189,7 +200,7 @@ const mainTechs = [
       if (!btn) return;
 
       document
-        .querySelectorAll<HTMLElement>(".filter-btn")
+        .querySelectorAll<HTMLElement>(".project-filters .filter-btn")
         .forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
@@ -206,6 +217,31 @@ const mainTechs = [
             wrapper.style.display = techs.includes(filter) ? "" : "none";
           }
         });
+    });
+
+  // Retos: ordenar por número (desc = más recientes, asc = más antiguos)
+  document
+    .querySelector<HTMLElement>(".reto-filters")
+    ?.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>(".filter-btn");
+      if (!btn) return;
+
+      document
+        .querySelectorAll<HTMLElement>(".reto-filters .filter-btn")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const order = btn.dataset.retoOrder;
+      const list = document.querySelector<HTMLElement>(".reto-list");
+      if (!list) return;
+
+      Array.from(list.querySelectorAll<HTMLElement>(".reto-wrapper"))
+        .sort((a, b) => {
+          const na = parseInt(a.dataset.numero ?? "0", 10);
+          const nb = parseInt(b.dataset.numero ?? "0", 10);
+          return order === "desc" ? nb - na : na - nb;
+        })
+        .forEach((wrapper) => list.appendChild(wrapper));
     });
 
   document.querySelector<HTMLElement>(".filter-btn.active")?.click();
@@ -279,7 +315,8 @@ const mainTechs = [
   }
 
   /* Project Filters */
-  .project-filters {
+  .project-filters,
+  .reto-filters {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -316,10 +353,18 @@ const mainTechs = [
   }
 
   /* Retos */
+  .reto-filters {
+    align-items: center;
+  }
+
   .reto-list {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-stack-gap);
+  }
+
+  .reto-wrapper {
+    display: contents;
   }
 
   /* About */

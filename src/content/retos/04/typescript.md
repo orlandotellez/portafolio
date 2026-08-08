@@ -1,0 +1,4 @@
+---
+lenguaje: "TypeScript"
+---
+
