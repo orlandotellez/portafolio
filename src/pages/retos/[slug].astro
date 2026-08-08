@@ -1,0 +1,498 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TopBar from "../../components/TopBar.astro";
+import SidebarLeft from "../../components/SidebarLeft.astro";
+import SidebarRight from "../../components/SidebarRight.astro";
+import MobileNav from "../../components/MobileNav.astro";
+import { getCollection, render } from "astro:content";
+import { LENGUAJES } from "../../content.config";
+
+export async function getStaticPaths() {
+  const retos = await getCollection("retos");
+  return retos.map((reto) => ({
+    params: { slug: reto.id },
+    props: { reto },
+  }));
+}
+
+const { reto } = Astro.props;
+const slug = reto.id;
+
+const soluciones = (await getCollection("soluciones"))
+  .filter((s) => s.id.startsWith(`${slug}/`))
+  .sort(
+    (a, b) =>
+      LENGUAJES.indexOf(a.data.lenguaje) - LENGUAJES.indexOf(b.data.lenguaje),
+  );
+
+// Renderiza cada solución a su componente Content
+const solucionesRenderizadas = await Promise.all(
+  soluciones.map(async (s) => ({
+    lenguaje: s.data.lenguaje,
+    Content: (await render(s)).Content,
+  })),
+);
+
+const { Content } = await render(reto);
+
+const fechaLegible = new Date(reto.data.fecha).toLocaleDateString("es-ES", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+// Mapea el lenguaje a una clase CSS estable
+const langClass = (lang: string) =>
+  ({ TypeScript: "typescript", "C#": "csharp", Rust: "rust" })[lang] ??
+  "default";
+---
+
+<Layout title={`${reto.data.titulo} | Reto de programación`}>
+  <TopBar />
+
+  <main class="main-container">
+    <SidebarLeft />
+
+    <section class="reto-detail">
+      <!-- Back link -->
+      <a href="/?tab=retos" class="back-link">
+        <span class="material-symbols-outlined back-icon">arrow_back</span>
+        Volver a retos
+      </a>
+
+      <!-- Title -->
+      <div class="reto-header">
+        <h1 class="reto-title font-headline-sm">{reto.data.titulo}</h1>
+        <p class="reto-resumen">{reto.data.resumen}</p>
+
+        <div class="reto-meta">
+          {
+            reto.data.lenguajes.map((lang) => (
+              <span
+                class:list={[
+                  "reto-chip",
+                  "reto-chip--lenguaje",
+                  `reto-chip--${langClass(lang)}`,
+                ]}
+              >
+                <span class="material-symbols-outlined chip-icon">
+                  terminal
+                </span>
+                {lang}
+              </span>
+            ))
+          }
+          <span class="reto-chip reto-chip--dificultad">
+            <span class="material-symbols-outlined chip-icon"
+              >signal_cellular_alt</span
+            >
+            {reto.data.dificultad}
+          </span>
+          <span class="reto-chip">
+            <span class="material-symbols-outlined chip-icon">event</span>
+            {fechaLegible}
+          </span>
+        </div>
+      </div>
+
+      <!-- Enunciado + idea central (markdown del reto) -->
+      <div class="reto-prose">
+        <Content />
+      </div>
+
+      <!-- Soluciones con tabs por lenguaje -->
+      <div class="soluciones">
+        <h2 class="sol-titulo">
+          <span class="material-symbols-outlined sol-titulo-icon">code</span>
+          Soluciones
+        </h2>
+
+        {
+          solucionesRenderizadas.length > 0 ? (
+            <>
+              <nav class="sol-tabs">
+                {solucionesRenderizadas.map((sol, i) => (
+                  <button
+                    class:list={["sol-tab", i === 0 && "active"]}
+                    data-lang={sol.lenguaje}
+                  >
+                    {sol.lenguaje}
+                  </button>
+                ))}
+              </nav>
+
+              {solucionesRenderizadas.map((sol, i) => (
+                <div
+                  class:list={["sol-panel", i === 0 && "active"]}
+                  data-lang={sol.lenguaje}
+                >
+                  <h3 class="sol-panel-title">Solución en {sol.lenguaje}</h3>
+                  <sol.Content />
+                </div>
+              ))}
+            </>
+          ) : (
+            <p class="sol-empty">
+              Este reto todavía no tiene soluciones. Crea un archivo en
+              <code>src/content/retos/{slug}/typescript.md</code> para empezar.
+            </p>
+          )
+        }
+      </div>
+    </section>
+
+    <SidebarRight />
+  </main>
+
+  <MobileNav />
+</Layout>
+
+<script>
+  document
+    .querySelector<HTMLElement>(".sol-tabs")
+    ?.addEventListener("click", (e) => {
+      const tab = (e.target as HTMLElement).closest<HTMLElement>(".sol-tab");
+      if (!tab) return;
+
+      document
+        .querySelectorAll<HTMLElement>(".sol-tab")
+        .forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      const lang = tab.dataset.lang;
+      document.querySelectorAll<HTMLElement>(".sol-panel").forEach((panel) => {
+        panel.classList.toggle("active", panel.dataset.lang === lang);
+      });
+    });
+</script>
+
+<style>
+  .main-container {
+    max-width: var(--spacing-container-max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 80px;
+  }
+
+  @media (min-width: 1024px) {
+    .main-container {
+      flex-direction: row;
+      padding-bottom: 0;
+    }
+  }
+
+  .reto-detail {
+    flex: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: var(--spacing-gutter);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Back link */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--color-on-surface-variant);
+    transition: color 0.2s ease;
+    width: fit-content;
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .back-icon {
+    font-size: 18px;
+  }
+
+  /* Header */
+  .reto-header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  .reto-title {
+    color: var(--color-primary);
+    font-size: 28px;
+  }
+
+  .reto-resumen {
+    font-size: 15px;
+    color: var(--color-on-surface-variant);
+    line-height: 1.6;
+  }
+
+  .reto-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .reto-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-on-surface-variant);
+    background-color: #0f0f0f;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: 5px;
+  }
+
+  .chip-icon {
+    font-size: 15px;
+    color: var(--color-tertiary);
+  }
+
+  .reto-chip--lenguaje {
+    color: var(--color-primary);
+  }
+
+  .reto-chip--typescript {
+    color: #7fb0ff;
+    background-color: rgba(49, 120, 198, 0.15);
+    border-color: rgba(49, 120, 198, 0.45);
+  }
+
+  .reto-chip--csharp {
+    color: #a78bff;
+    background-color: rgba(81, 43, 212, 0.22);
+    border-color: rgba(81, 43, 212, 0.5);
+  }
+
+  .reto-chip--rust {
+    color: #ff8f6b;
+    background-color: rgba(206, 66, 43, 0.16);
+    border-color: rgba(206, 66, 43, 0.45);
+  }
+
+  .reto-chip--dificultad {
+    color: var(--color-tertiary);
+  }
+
+  /* Markdown content (enunciado + idea central) */
+  .reto-prose :global(h2) {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 28px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-outline-variant);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .reto-prose :global(h2::before) {
+    content: "▸";
+    color: var(--color-primary);
+  }
+
+  .reto-prose :global(h3) {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 20px 0 8px;
+    color: var(--color-primary);
+  }
+
+  .reto-prose :global(p) {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+    margin-bottom: 12px;
+  }
+
+  .reto-prose :global(strong) {
+    color: var(--color-on-surface);
+  }
+
+  .reto-prose :global(ul),
+  .reto-prose :global(ol) {
+    margin: 0 0 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .reto-prose :global(li) {
+    list-style: disc;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+  }
+
+  .reto-prose :global(pre) {
+    background-color: #0a0a0a;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: 5px;
+    padding: 16px;
+    margin: 12px 0 16px;
+    overflow-x: auto;
+  }
+
+  .reto-prose :global(code) {
+    font-family: var(--font-code-label);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .reto-prose :global(pre code) {
+    background: none;
+    padding: 0;
+    color: #e5e2e1;
+  }
+
+  .reto-prose :global(:not(pre) > code) {
+    background-color: #1a1a1a;
+    color: var(--color-tertiary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+  }
+
+  /* Soluciones con tabs */
+  .sol-titulo {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sol-titulo-icon {
+    font-size: 22px;
+    color: var(--color-primary);
+  }
+
+  .sol-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--color-outline-variant);
+    margin-top: 12px;
+  }
+
+  .sol-tab {
+    flex: 1;
+    padding: 12px;
+    color: var(--color-on-surface-variant);
+    font-weight: 500;
+    font-size: 14px;
+    font-family: var(--font-body-md);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .sol-tab:hover {
+    color: var(--color-on-surface);
+    background-color: var(--color-surface-container);
+  }
+
+  .sol-tab.active {
+    color: var(--color-primary);
+    font-weight: 700;
+    border-bottom-color: var(--color-primary);
+  }
+
+  .sol-panel {
+    display: none;
+    padding-top: 16px;
+  }
+
+  .sol-panel.active {
+    display: block;
+  }
+
+  .sol-panel-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+  }
+
+  /* Contenido de cada solución (Markdown) */
+  .sol-panel :global(pre) {
+    background-color: #0a0a0a;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: 5px;
+    padding: 16px;
+    margin: 8px 0 16px;
+    overflow-x: auto;
+  }
+
+  .sol-panel :global(code) {
+    font-family: var(--font-code-label);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .sol-panel :global(pre code) {
+    background: none;
+    padding: 0;
+    color: #e5e2e1;
+  }
+
+  .sol-panel :global(p) {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+    margin-bottom: 12px;
+  }
+
+  .sol-panel :global(strong) {
+    color: var(--color-on-surface);
+  }
+
+  .sol-panel :global(ul),
+  .sol-panel :global(ol) {
+    margin: 0 0 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sol-panel :global(li) {
+    list-style: disc;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+  }
+
+  .sol-panel :global(:not(pre) > code) {
+    background-color: #1a1a1a;
+    color: var(--color-tertiary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+  }
+
+  .sol-empty {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-on-surface-variant);
+    background-color: #0f0f0f;
+    border: 1px dashed var(--color-outline-variant);
+    border-radius: 5px;
+    padding: 16px;
+  }
+
+  .sol-empty :global(code) {
+    background-color: #1a1a1a;
+    color: var(--color-tertiary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+  }
+</style>
+

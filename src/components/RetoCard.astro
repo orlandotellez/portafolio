@@ -1,0 +1,204 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  reto: CollectionEntry<"retos">;
+}
+
+const { reto } = Astro.props;
+
+const numero = reto.id.match(/^(\d+)/)?.[1] ?? null;
+
+const fechaLegible = new Date(reto.data.fecha).toLocaleDateString("es-ES", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
+// Mapea el lenguaje a una clase CSS estable ("C#" no es un selector válido)
+const langClass = (lang: string) =>
+  ({ TypeScript: "typescript", "C#": "csharp", Rust: "rust" })[lang] ??
+  "default";
+---
+
+<article class="feed-card reto-card">
+  <div class="reto-header">
+    <div class="reto-titulo-wrap">
+      {
+        numero && (
+          <span class="reto-numero font-code-label">#{numero}</span>
+        )
+      }
+      <h3 class="font-headline-sm reto-title">{reto.data.titulo}</h3>
+    </div>
+    <span
+      class:list={["reto-badge", `reto-badge--${reto.data.dificultad.toLowerCase()}`]}
+    >
+      {reto.data.dificultad}
+    </span>
+  </div>
+
+  <p class="font-body-sm reto-descripcion">{reto.data.resumen}</p>
+
+  <div class="reto-meta font-code-label">
+    <span class="reto-lenguajes">
+      {reto.data.lenguajes.map((lang) => (
+        <span class:list={["reto-lang", `reto-lang--${langClass(lang)}`]}>
+          {lang}
+        </span>
+      ))}
+    </span>
+    <span class="reto-fecha">
+      <span class="material-symbols-outlined reto-meta-icon">calendar_today</span>
+      {fechaLegible}
+    </span>
+  </div>
+
+  <a href={`/retos/${reto.id}`} class="reto-btn font-body-sm">
+    <span class="material-symbols-outlined reto-btn-icon">code</span>
+    Ver solución
+  </a>
+</article>
+
+<style>
+  .reto-card {
+    border-radius: 5px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .reto-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .reto-titulo-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .reto-numero {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--color-tertiary);
+    opacity: 0.8;
+  }
+
+  .reto-title {
+    color: var(--color-primary);
+  }
+
+  .reto-badge {
+    flex-shrink: 0;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .reto-badge--fácil {
+    color: #4ade80;
+    background-color: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+  }
+
+  .reto-badge--intermedio {
+    color: var(--color-tertiary);
+    background-color: rgba(255, 184, 113, 0.12);
+    border: 1px solid rgba(255, 184, 113, 0.3);
+  }
+
+  .reto-badge--difícil {
+    color: #f87171;
+    background-color: rgba(248, 113, 113, 0.12);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+  }
+
+  .reto-descripcion {
+    color: var(--color-on-surface-variant);
+    line-height: 1.6;
+  }
+
+  .reto-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    color: var(--color-on-surface-variant);
+    font-size: 12px;
+  }
+
+  .reto-lenguajes {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .reto-lang {
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .reto-lang--typescript {
+    color: #7fb0ff;
+    background-color: rgba(49, 120, 198, 0.15);
+    border: 1px solid rgba(49, 120, 198, 0.45);
+  }
+
+  .reto-lang--csharp {
+    color: #a78bff;
+    background-color: rgba(81, 43, 212, 0.22);
+    border: 1px solid rgba(81, 43, 212, 0.5);
+  }
+
+  .reto-lang--rust {
+    color: #ff8f6b;
+    background-color: rgba(206, 66, 43, 0.16);
+    border: 1px solid rgba(206, 66, 43, 0.45);
+  }
+
+  .reto-fecha {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .reto-meta-icon {
+    font-size: 15px;
+    color: var(--color-tertiary);
+  }
+
+  .reto-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
+    font-weight: 600;
+    font-size: 12px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .reto-btn:hover {
+    opacity: 0.9;
+  }
+
+  .reto-btn-icon {
+    font-size: 15px;
+  }
+</style>
