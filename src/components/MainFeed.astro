@@ -161,12 +161,30 @@ const mainTechs = [
       </button>
       <button class="filter-btn" data-reto-order="asc">Más antiguos</button>
     </div>
+    <div class="reto-pagination" aria-label="Paginación de retos">
+      <button class="page-btn" data-page-prev disabled>
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <span class="page-info" data-page-info>1 / 1</span>
+      <button class="page-btn" data-page-next disabled>
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
     <div class="reto-list">
       {retos.map((reto) => (
         <div class="reto-wrapper" data-numero={retoNumero(reto.id) ?? "0"}>
           <RetoCard reto={reto} />
         </div>
       ))}
+    </div>
+    <div class="reto-pagination" aria-label="Paginación de retos">
+      <button class="page-btn" data-page-prev disabled>
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <span class="page-info" data-page-info>1 / 1</span>
+      <button class="page-btn" data-page-next disabled>
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
     </div>
   </div>
 </section>
@@ -219,7 +237,55 @@ const mainTechs = [
         });
     });
 
-  // Retos: ordenar por número (desc = más recientes, asc = más antiguos)
+  // Retos: estado de orden y paginación
+  const RETOS_PER_PAGE = 5;
+  let retoOrder: "desc" | "asc" = "desc";
+  let retoPage = 1;
+
+  function renderRetos() {
+    const list = document.querySelector<HTMLElement>(".reto-list");
+    if (!list) return;
+
+    const wrappers = Array.from(
+      list.querySelectorAll<HTMLElement>(".reto-wrapper"),
+    );
+
+    // Ordenar por número (desc = más recientes, asc = más antiguos)
+    wrappers.sort((a, b) => {
+      const na = parseInt(a.dataset.numero ?? "0", 10);
+      const nb = parseInt(b.dataset.numero ?? "0", 10);
+      return retoOrder === "desc" ? nb - na : na - nb;
+    });
+    wrappers.forEach((wrapper) => list.appendChild(wrapper));
+
+    // Paginar
+    const totalPages = Math.max(1, Math.ceil(wrappers.length / RETOS_PER_PAGE));
+    retoPage = Math.min(Math.max(1, retoPage), totalPages);
+
+    wrappers.forEach((wrapper, i) => {
+      wrapper.style.display =
+        i >= (retoPage - 1) * RETOS_PER_PAGE &&
+        i < retoPage * RETOS_PER_PAGE
+          ? ""
+          : "none";
+    });
+
+    // Sincronizar controles (arriba y abajo)
+    document
+      .querySelectorAll<HTMLElement>(".reto-pagination")
+      .forEach((pagination) => {
+        const info = pagination.querySelector<HTMLElement>("[data-page-info]");
+        if (info) info.textContent = `${retoPage} / ${totalPages}`;
+        const prev =
+          pagination.querySelector<HTMLButtonElement>("[data-page-prev]");
+        const next =
+          pagination.querySelector<HTMLButtonElement>("[data-page-next]");
+        if (prev) prev.disabled = retoPage <= 1;
+        if (next) next.disabled = retoPage >= totalPages;
+      });
+  }
+
+  // Cambio de orden: vuelve a la primera página
   document
     .querySelector<HTMLElement>(".reto-filters")
     ?.addEventListener("click", (e) => {
@@ -231,18 +297,33 @@ const mainTechs = [
         .forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
-      const order = btn.dataset.retoOrder;
+      retoOrder = (btn.dataset.retoOrder as "desc" | "asc") ?? "desc";
+      retoPage = 1;
+      renderRetos();
+    });
+
+  // Navegación de página (controles de arriba y abajo sincronizados)
+  document
+    .querySelector<HTMLElement>("#section-retos")
+    ?.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>(
+        "[data-page-prev], [data-page-next]",
+      );
+      if (!btn || (btn as HTMLButtonElement).disabled) return;
+
       const list = document.querySelector<HTMLElement>(".reto-list");
       if (!list) return;
+      const totalPages = Math.max(
+        1,
+        Math.ceil(list.querySelectorAll(".reto-wrapper").length / RETOS_PER_PAGE),
+      );
 
-      Array.from(list.querySelectorAll<HTMLElement>(".reto-wrapper"))
-        .sort((a, b) => {
-          const na = parseInt(a.dataset.numero ?? "0", 10);
-          const nb = parseInt(b.dataset.numero ?? "0", 10);
-          return order === "desc" ? nb - na : na - nb;
-        })
-        .forEach((wrapper) => list.appendChild(wrapper));
+      if (btn.hasAttribute("data-page-prev")) retoPage = Math.max(1, retoPage - 1);
+      else retoPage = Math.min(totalPages, retoPage + 1);
+      renderRetos();
     });
+
+  renderRetos();
 
   document.querySelector<HTMLElement>(".filter-btn.active")?.click();
 
@@ -355,6 +436,50 @@ const mainTechs = [
   /* Retos */
   .reto-filters {
     align-items: center;
+  }
+
+  .reto-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: var(--color-on-surface);
+    background-color: transparent;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .page-btn .material-symbols-outlined {
+    font-size: 18px;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    background-color: var(--color-surface-container);
+  }
+
+  .page-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .page-info {
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    font-variant-numeric: tabular-nums;
+    min-width: 40px;
+    text-align: center;
   }
 
   .reto-list {
