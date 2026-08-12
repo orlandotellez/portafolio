@@ -7,6 +7,19 @@ export function toSlug(text) {
 
 export const proyectos = [
   {
+    subtitulo: "POS System",
+    tecnologias: ["TS", "Rust", "Fastify", "Tauri", "CSS"],
+    texto: "Sistema POS (Point of Sale) moderno con backend en Fastify y Rust para gestión de ventas e inventario.",
+    img: "/img/proyecto-pos-system.png",
+    url: "https://github.com/orlandotellez/pos-system",
+    github: "https://github.com/orlandotellez/pos-system",
+    destacado: true,
+    app: true,
+    activeApp: true,
+    releases: "https://github.com/orlandotellez/pos-system/releases"
+  },
+
+  {
     subtitulo: "Bookteka",
     tecnologias: ["Astro", "React", "React Native", "TS", "NodeJs"],
     texto: "Tu biblioteca digital personal con lector integrado.",
@@ -24,18 +37,6 @@ export const proyectos = [
     img: "/img/proyecto-techcomponents.png",
     url: "https://techcomponents.vercel.app/",
     github: "https://github.com/OrlandoTellez/techcomponents",
-  },
-  {
-    subtitulo: "POS System",
-    tecnologias: ["TS", "Rust", "Fastify", "Tauri", "CSS"],
-    texto: "Sistema POS (Point of Sale) moderno con backend en Fastify y Rust para gestión de ventas e inventario.",
-    img: "/img/proyecto-pos-system.png",
-    url: "https://github.com/orlandotellez/pos-system",
-    github: "https://github.com/orlandotellez/pos-system",
-    destacado: true,
-    app: true,
-    activeApp: true,
-    releases: "https://github.com/orlandotellez/pos-system/releases"
   },
 
   {
