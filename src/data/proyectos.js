@@ -11,7 +11,7 @@ export const proyectos = [
     tecnologias: ["TS", "Rust", "Fastify", "Tauri", "CSS"],
     texto: "Sistema POS (Point of Sale) moderno con backend en Fastify y Rust para gestión de ventas e inventario.",
     img: "/img/proyecto-pos-system.png",
-    url: "https://github.com/orlandotellez/pos-system",
+    url: "https://orlandotellez.github.io/pos-system",
     github: "https://github.com/orlandotellez/pos-system",
     destacado: true,
     app: true,
