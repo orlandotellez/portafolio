@@ -7,16 +7,16 @@ export function toSlug(text) {
 
 export const proyectos = [
   {
-    subtitulo: "POS System",
+    subtitulo: "CajoraPos",
     tecnologias: ["TS", "Rust", "Fastify", "Tauri", "CSS"],
     texto: "Sistema POS (Point of Sale) moderno con backend en Fastify y Rust para gestión de ventas e inventario.",
     img: "/img/proyecto-pos-system.png",
-    url: "https://orlandotellez.github.io/pos-system",
-    github: "https://github.com/orlandotellez/pos-system",
+    url: "https://cajorapos.com",
+    github: "https://github.com/orlandotellez/cajora-pos",
     destacado: true,
     app: true,
     activeApp: true,
-    releases: "https://github.com/orlandotellez/pos-system/releases"
+    releases: "https://github.com/orlandotellez/cajora-pos/releases"
   },
 
   {
