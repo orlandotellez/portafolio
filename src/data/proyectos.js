@@ -18,6 +18,16 @@ export const proyectos = [
     activeApp: true,
     releases: "https://github.com/orlandotellez/cajora-pos/releases"
   },
+  {
+    subtitulo: "Fwinit",
+    tecnologias: ["TS", "Astro", "CLI"],
+    texto: "CLI para crear proyectos desde templates. Instalás una vez y scaffoldás proyectos con un comando.",
+    img: "/img/proyecto-restix.png",
+    url: "https://fwinit.vercel.app",
+    github: "https://github.com/orlandotellez/fwinit",
+    destacado: true
+  },
+
 
   {
     subtitulo: "Bookteka",
@@ -57,15 +67,7 @@ export const proyectos = [
     img: "/img/proyecto-restix.png",
     url: "https://github.com/OrlandoTellez/restix",
     github: "https://github.com/OrlandoTellez/restix",
-    destacado: true
-  },
-  {
-    subtitulo: "Rasflow",
-    tecnologias: ["Rust", "React", "TS"],
-    texto: "Aplicación web para gestión y organización de tareas.",
-    img: "/img/proyecto-rasflow.png",
-    url: "https://rasflow.vercel.app/",
-    github: "https://github.com/OrlandoTellez/rasflow"
+    destacado: false
   },
   {
     subtitulo: "VertiCollage",
@@ -99,71 +101,4 @@ export const proyectos = [
     url: "https://github.com/OrlandoTellez/dotfiles",
     github: "https://github.com/OrlandoTellez/dotfiles"
   },
-  {
-    subtitulo: "Arquitectura",
-    tecnologias: ["Astro", "CSS", "TS"],
-    texto: "Plantillas de páginas web enfocadas en arquitectura y diseño moderno.",
-    img: "/img/proyecto-arquitectura.png",
-    url: "https://arquitectura-template.vercel.app/",
-    github: "https://github.com/OrlandoTellez/arquitectura-template"
-  },
-  {
-    subtitulo: "Dashboards",
-    tecnologias: ["Fastify", "NextJs", "TS", "Full Stack"],
-    texto: "Plantillas Full Stack para paneles administrativos.",
-    img: "/img/proyecto-dashboards.png",
-    url: "https://dashboards-template.vercel.app/",
-    github: "https://github.com/OrlandoTellez/dashboards-template"
-  },
-
-  // Proyectos antiguos
-  {
-    subtitulo: "Formatted Time",
-    tecnologias: ["Astro", "TS"],
-    texto: "Formateador de tiempo en JavaScript para crear y mostrar fechas personalizadas.",
-    img: "/img/proyecto-formateador.png",
-    url: "https://formatted-time.vercel.app/",
-    github: "https://github.com/OrlandoTellez/formatted-time"
-  },
-  {
-    subtitulo: "Hardware Web",
-    tecnologias: ["NextJs", "TS"],
-    texto: "Página web que enseña sobre hardware, explicando sus componentes, aplicaciones y curiosidades.",
-    img: "/img/proyecto-hardwareWeb.png",
-    url: "https://hardware-web.vercel.app/",
-    github: "https://github.com/OrlandoTellez/hardware-web"
-  },
-  {
-    subtitulo: "Filtro de imágenes con JS",
-    tecnologias: ["NodeJs", "CSS", "JS", "HTML"],
-    texto: "Aplicación que permite aplicar filtros personalizados a imágenes directamente en el navegador.",
-    img: "/img/proyecto-filtroImagenes.png",
-    url: "https://filtro-imagenes-production.up.railway.app/",
-    github: "https://github.com/OrlandoTellez/filtro-imagenes"
-  },
-  {
-    subtitulo: "CatPedia",
-    tecnologias: ["NodeJs", "CSS", "JS"],
-    texto: "Aplicación web para consultar información y curiosidades sobre gatos.",
-    img: "/img/proyecto-catPedia.png",
-    url: "https://pagina-de-gatos-node-js.vercel.app/",
-    github: "https://github.com/OrlandoTellez/pagina-de-gatos-NodeJs"
-  },
-  {
-    subtitulo: "Trello App",
-    tecnologias: ["HTML", "CSS", "JS"],
-    texto: "Aplicación web que simula el comportamiento de Trello, ofreciendo una interfaz sencilla y eficiente.",
-    img: "/img/proyecto-trelloApp.png",
-    url: "https://orlandotellez.github.io/trello-app/",
-    github: "https://github.com/OrlandoTellez/trello-app"
-  },
-  {
-    subtitulo: "Twitter Clon",
-    tecnologias: ["HTML", "CSS", "JS"],
-    texto: "Clon de la interfaz de Twitter(X), replicando su diseño y funcionalidades principales.",
-    img: "/img/proyecto-twiterClon.png",
-    url: "https://twiter-clon.onrender.com/",
-    github: "https://github.com/OrlandoTellez/twiter-clon"
-  },
-
 ];
